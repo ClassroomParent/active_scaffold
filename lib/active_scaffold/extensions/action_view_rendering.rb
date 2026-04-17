@@ -182,30 +182,6 @@ module ActionView
       include ActiveScaffold::RenderingHelper
     end
 
-<<<<<<< version4-3
-    if Gem.loaded_specs['rails'].version.segments.first >= 6
-      RenderingHelper.class_eval do
-        # override the render method to use our @lookup_context instead of the
-        # memoized @_lookup_context
-        def render(options = {}, locals = {}, &block)
-          # TDH 2025-01: Handle rendering of objects that respond to render_in (e.g., ViewComponent)
-          # copied from this pull request https://github.com/activescaffold/active_scaffold/pull/743/changes
-          # which was released in 4.1
-          return options.render_in(self) if options.respond_to?(:render_in)
-
-          case options
-          when Hash
-            in_rendering_context(options) do |_|
-              # previously set view paths and lookup context are lost here
-              # if you use view_renderer, so instead create a new renderer
-              # with our context
-              temp_renderer = ActionView::Renderer.new(@lookup_context)
-              if block_given?
-                temp_renderer.render_partial(self, options.merge(partial: options[:layout]), &block)
-              else
-                temp_renderer.render(self, options)
-              end
-=======
     RenderingHelper.class_eval do
       # override the render method to use our @lookup_context instead of the
       # memoized @_lookup_context
@@ -223,7 +199,6 @@ module ActionView
               temp_renderer.render_partial(self, options.merge(partial: options[:layout]), &block)
             else
               temp_renderer.render(self, options)
->>>>>>> master
             end
           end
         else
